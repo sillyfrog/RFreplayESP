@@ -22,7 +22,7 @@ The RF_Record.ino file has the code to record signals on an ESP, it is designed 
 
 ## Replaying codes
 
-Now you have a bunch of recorded codes, they can be uploaded to the ESP with your main code on it (see the examples, RF_Send.ino is a simple one to start with). The files are uploaded to the SPIFFS file system in a `/signals/` directory. For more information, see here: https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md#file-system-object-spiffs  The only thing that's really important is to be calling `SPIFFS.begin();` in your setup. See the previous link for ways to upload files to the filesystem, the web example allow you to do this via the web interface.
+Now you have a bunch of recorded codes, they can be uploaded to the ESP with your main code on it (see the examples, RF_Send.ino is a simple one to start with). The files are uploaded to the SPIFFS file system in a `/signals/` directory. For more information, see here: https://github.com/esp8266/Arduino/blob/master/doc/filesystem.rst (note SPIFFS is end of life and this library should be updated to support LittleFS).  The only thing that's really important is to be calling `SPIFFS.begin();` in your setup. See the previous link for ways to upload files to the filesystem, the web example allow you to do this via the web interface.
 
 If you run RF_Record.ino, you can then flash RF_Send.ino, and it will re-transmit the same signal.
 
