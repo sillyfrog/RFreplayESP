@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <RF433.h>
 
 #define RFDEBUG 1
@@ -9,7 +10,7 @@
  * rf_rx: the pin the receiver is connected to.
  * rf_tx: the pin the transmitter is connected to.
  *
- * If a pin is not required (i.e.: you just need transmit), use a negative 
+ * If a pin is not required (i.e.: you just need transmit), use a negative
  * number for the pin.
  */
 RF433::RF433(int rf_rx, int rf_tx) {
@@ -23,9 +24,9 @@ void RF433::setup() {
 }
 
 /* Send a recorded signal
- * signame: the name of the signal that has been recorded. This is a file on 
+ * signame: the name of the signal that has been recorded. This is a file on
  * the SPIFFS file system in the /signals/ directory, with a .txt extension.
- * 
+ *
  * Will return non-zero on error, currently the only error is an unknown
  * signame (file name).
  */
@@ -39,7 +40,8 @@ int RF433::sendSignal(String signame) {
     if (signame.startsWith("/signals/")) {
         // We have a full file path, so use it
         filename = signame;
-    } else {
+    }
+    else {
         filename = "/signals/" + signame + ".txt";
     }
 
@@ -52,10 +54,10 @@ int RF433::sendSignal(String signame) {
         return 2;
     }
 
-#ifdef RFDEBUG
+    #ifdef RFDEBUG
     Serial.print("Signal file size: ");
     Serial.println(fsize);
-#endif
+    #endif
 
     unsigned long nexttime = micros();
     while (bFile.position() < fsize) {
@@ -63,8 +65,8 @@ int RF433::sendSignal(String signame) {
         digitalWrite(_tx_pin, state);
         ndelay = bFile.parseInt();
         nexttime += ndelay;
-        while(micros() < nexttime){
-          //pass
+        while (micros() < nexttime) {
+            //pass
         }
     }
     yield();
@@ -79,10 +81,10 @@ int RF433::sendSignal(String signame) {
  * Will return 0 on success. Errors include a signal that's too long (overflows).
  */
 int RF433::recordSignal(String signame) {
-#ifdef RFDEBUG
+    #ifdef RFDEBUG
     Serial.print("Ready to record: ");
     Serial.println(signame);
-#endif
+    #endif
     if (_rx_pin < 0) {
         return 1;
     }
@@ -113,15 +115,15 @@ int RF433::recordSignal(String signame) {
             return 2;
         }
         yield();
-            //if (siglength == MAX_SIGNAL_LEN) {
-            //    return 3;
-            //}
+        //if (siglength == MAX_SIGNAL_LEN) {
+        //    return 3;
+        //}
         if ((siglength > 1) && ((mnow - lasttime) > 30000 || siglength == MAX_SIGNAL_LEN)) {
             if (siglength < 10) {
                 // Too small, assume a failure
                 return 1;
             }
-#ifdef RFDEBUG
+            #ifdef RFDEBUG
             Serial.print("\nCapture Complete. Signal Length: ");
             delay(5);
             Serial.println(siglength);
@@ -132,7 +134,7 @@ int RF433::recordSignal(String signame) {
             }
             Serial.println("");
             Serial.println("======= End Signal Here ==========");
-#endif
+            #endif
             yield();
             File bFile = SPIFFS.open("/signals/" + signame + ".txt", "w");
             for (int i=1; i<siglength; i++) {
@@ -141,10 +143,10 @@ int RF433::recordSignal(String signame) {
                 yield();
             }
             yield();
-#ifdef RFDEBUG
+            #ifdef RFDEBUG
             Serial.print("File saved to: ");
             Serial.println("/signals/" + signame + ".txt");
-#endif
+            #endif
             return 0;
         }
     }

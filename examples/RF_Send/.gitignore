@@ -3,7 +3,3 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-
-# Private settings file
-mysettings.h
-.DS_Store
