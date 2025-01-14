@@ -4,6 +4,7 @@
 .vscode/launch.json
 .vscode/ipch
 
+.vscode/
 # Private settings file
 mysettings.h
 .DS_Store
