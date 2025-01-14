@@ -41,6 +41,14 @@ For all the following examples, start a new project with the nested folder struc
 - Web_RF_Record: Basic example to record RF signals, and then download via a web interface
 - Web_RF_Send: Basic example to send RF signals, with a web interface to select the signal to send
 
+# Uploading saved files
+
+If you want to upload saved recording files:
+
+- In your PlatformIO project, create a `/data/signals/` directory in the root of the project.
+- Copy in all your signal files (including the `.txt` extension).
+- Upload the files to the ESP by running `pio run --target uploadfs` from the VScode terminal, the latest version of PlatformIO should automatically us _LittleFS_.
+
 # More info
 
 See the wiki for the hardware and setup that I used with this code.
