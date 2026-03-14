@@ -8,8 +8,13 @@ You will need to rename mysettings.h.example to mysettings.h and fill in your Wi
 */
 #include <Arduino.h>
 #include <RF433.h>
+#ifdef ESP32
 #include <WiFi.h>
 #include <WebServer.h>
+#else
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#endif
 #include "mysettings.h"
 
 #ifdef ESP32
@@ -18,7 +23,12 @@ RF433 rf433(-1, 16);
 RF433 rf433(-1, D2);
 #endif
 
+#ifdef ESP32
 WebServer server(80);
+#else
+ESP8266WebServer server(80);
+#endif
+
 void handleFileList()
 {
     if (!LittleFS.begin())
@@ -27,7 +37,7 @@ void handleFileList()
         return;
     }
 
-    File root = LittleFS.open("/signals/");
+    File root = LittleFS.open("/signals", "r");
     if (!root)
     {
         server.send(500, "text/plain", "Failed to open root directory");
@@ -113,7 +123,7 @@ void setup()
     }
 
     Serial.print("\nSetup file system:");
-    Serial.println(LittleFS.begin(true));
+    Serial.println(LittleFS.begin());
 
     LittleFS.mkdir("/signals");
 
