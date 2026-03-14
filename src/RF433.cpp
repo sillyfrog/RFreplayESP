@@ -21,7 +21,7 @@ void RF433::setup()
 {
     pinMode(_tx_pin, OUTPUT);
     pinMode(_rx_pin, INPUT);
-    LittleFS.begin(true);
+    LittleFS.begin();
     LittleFS.mkdir("/signals");
 }
 
